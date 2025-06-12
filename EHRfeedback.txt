@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Electronic Health Records Feedback</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://img.freepik.com/free-vector/seamless-medical-pattern_23-2148542541.jpg?w=1060&t=st=1718161600~exp=1718162200~hmac=061c4d87cb004758bdc478b4c6f04b1b8e24dfb304517b084e3ce4b1bdfdfb0d') no-repeat center center fixed;
+      background-size: cover;
+      background-blend-mode: lighten;
+      background-color: #fef7ff;
+      padding: 40px 0;
+    }
+
+    .form-container {
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 550px;
+      margin: auto;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h2, h3 {
+      text-align: center;
+      color: #6a5acd;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #333;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+      background-color: #f7faff;
+    }
+
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 12px;
+      background-color: #cdb4db;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #b392ac;
+    }
+
+    #qrImage {
+      display: block;
+      margin: 20px auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Electronic Health Records Feedback</h2>
+
+    <form>
+      <label>หน่วยงาน:</label>
+      <input type="text" name="department" required>
+
+      <label>ตำแหน่งของผู้ใช้งาน:</label>
+      <input type="text" name="position" required>
+
+      <label>วันที่พบปัญหา:</label>
+      <input type="date" name="date" required>
+
+      <label>ความคิดเห็น:</label>
+      <textarea name="comments" rows="4" required></textarea>
+
+      <button type="submit">ส่ง</button>
+    </form>
+
+    <h3>🔗 QR Code to This Page</h3>
+    <img id="qrImage" src="" alt="QR Code" width="200">
+  </div>
+
+  <script>
+    const qrUrl = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=" + encodeURIComponent(window.location.href);
+    document.getElementById("qrImage").src = qrUrl;
+  </script>
+</body>
+</html>
