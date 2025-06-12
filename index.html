@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Electronic Health Records Feedback</title>
+  <style>
+    body { font-family: sans-serif; max-width: 500px; margin: 40px auto; }
+    label { display: block; margin-top: 15px; }
+    input, textarea { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
+    #qrImage { margin-top: 30px; }
+  </style>
+</head>
+<body>
+  <h2>Electronic Health Records Feedback</h2>
+
+  <form>
+    <label>หน่วยงาน:</label>
+    <input type="text" name="department" required>
+
+    <label>ตำแหน่งของผู้ใช้งาน:</label>
+    <input type="text" name="position" required>
+
+    <label>วันที่พบปัญหา:</label>
+    <input type="date" name="date" required>
+
+    <label>ความคิดเห็น:</label>
+    <textarea name="comments" rows="4" required></textarea>
+
+    <br><br>
+    <button type="submit">ส่ง</button>
+  </form>
+
+  <h3>🔗 QR Code to This Page</h3>
+  <img id="qrImage" src="" alt="QR Code" width="200">
+  
+  <script>
+    const qrUrl = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=" + encodeURIComponent(window.location.href);
+    document.getElementById("qrImage").src = qrUrl;
+  </script>
+</body>
+</html>
