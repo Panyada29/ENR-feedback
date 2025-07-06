@@ -1,41 +1,392 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Electronic Health Records Feedback</title>
+  <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    body { font-family: sans-serif; max-width: 500px; margin: 40px auto; }
-    label { display: block; margin-top: 15px; }
-    input, textarea { width: 100%; padding: 8px; margin-top: 5px; box-sizing: border-box; }
-    #qrImage { margin-top: 30px; }
+    body {
+      font-family: 'Mali', cursive;
+      background: url('https://img.freepik.com/free-vector/seamless-medical-pattern_23-2148542541.jpg?w=1060&t=st=1718161600~exp=1718162200~hmac=061c4d87cb004758bdc478b4c6f04b1b8e24dfb304517b084e3ce4b1bdfdfb0d') no-repeat center center fixed;
+      background-size: cover;
+      background-blend-mode: lighten;
+      background-color: #fef7ff;
+      padding: 40px 10px;
+    }
+    .form-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 30px;
+      max-width: 800px;
+      margin: auto;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      position: relative;
+    }
+    .banner-image {
+      width: 100%;
+      border-radius: 20px 20px 0 0;
+      margin-bottom: 10px;
+    }
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding: 0 10px;
+    }
+    .header-row h2 {
+      margin: 0;
+      color: #a984cc;
+      font-size: 26px;
+      text-align: left;
+      flex-grow: 1;
+    }
+    .reset-button {
+      background-color: #add8e6;
+      color: black;
+      font-weight: bold;
+      border: none;
+      padding: 10px 8px;
+      border-radius: 10px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      font-size: 16px;
+      white-space: nowrap;
+      width: auto;
+      min-width: 0;
+      flex-shrink: 0;
+    }
+    .reset-button:hover {
+      background-color: #91c8e0;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #555;
+      text-align: left;
+      font-size: 18px;
+    }
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-sizing: border-box;
+      background-color: #fdf6ff;
+      font-size: 18px;
+    }
+    button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 14px;
+      background-color: #d5a6bd;
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 18px;
+    }
+    button:hover {
+      background-color: #b47aa2;
+    }
+    #confirmImagesBtn {
+      background-color: #add8e6;
+      width: auto;
+      padding: 10px 14px;
+    }
+    #confirmImagesBtn:hover {
+      background-color: #91c8e0;
+    }
+    .exit-button {
+      background-color: #a984cc;
+    }
+    .exit-button:hover {
+      background-color: #8666a8;
+    }
+    .cute-image {
+      margin-top: 20px;
+      max-width: 250px;
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @media (max-width: 600px) {
+      .form-container {
+        padding: 20px;
+      }
+      .header-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .reset-button {
+        margin-top: 10px;
+      }
+    }
+    .hidden {
+      display: none;
+    }
+    #waitingBox {
+      display: none;
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #d5a6bd;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      z-index: 9999;
+    }
   </style>
 </head>
 <body>
-  <h2>Electronic Health Records Feedback</h2>
+  <div class="form-container">
+    <img src="https://i.postimg.cc/s2tyFm9S/Cream-Green-Organic-Flow-and-Form-Mindfulness-Linked-In-Banner.png" alt="Banner" class="banner-image" />
+    <div class="header-row">
+      <h2>แบบฟอร์มข้อเสนอแนะระบบเวชระเบียนอิเล็กทรอนิกส์</h2>
+      <button type="button" class="reset-button" onclick="resetForm()">ล้างข้อมูล</button>
+    </div>
+    <form id="feedbackForm" enctype="multipart/form-data">
+      <!-- Your form fields go here -->
+      <label>งานการพยาบาล:</label>
+      <select name="departmentMain" id="departmentMain" required>
+        <option value="" disabled selected>กรุณาเลือกงานที่ท่านสังกัด</option>
+        <option>งานการพยาบาลผู้ป่วยนอก 1</option>
+        <option>งานการพยาบาลผู้ป่วยนอก 2</option>
+        <option>งานการพยาบาลผู้ป่วยนอกระบบพิเศษ</option>
+        <option>งานการพยาบาลผู้ป่วยใน 1</option>
+        <option>งานการพยาบาลผู้ป่วยใน 2</option>
+        <option>งานการพยาบาลผู้ป่วยใน 3</option>
+        <option>งานการพยาบาลผู้ป่วยในระบบพิเศษ 1</option>
+        <option>งานการพยาบาลผู้ป่วยในระบบพิเศษ 2</option>
+        <option>งานการพยาบาลผู้ป่วยเด็ก</option>
+        <option>งานการพยาบาลวิกฤต 1</option>
+        <option>งานการพยาบาลวิกฤต 2</option>
+        <option>งานการพยาบาลห้องผ่าตัด</option>
+        <option>งานการพยาบาลสนับสนุนการรักษา</option>
+        <option>งานบริหารฝ่ายการพยาบาล</option>
+        <option>งานวิจัย นวัตกรรม การจัดการความรู้และสารสนเทศทางการพยาบาล</option>
+        <option>งานบริหารและพัฒนาบุคลากรทางการพยาบาล</option>
+        <option>งานพัฒนาคุณภาพทางการพยาบาล</option>
+        <option>ฝ่ายการพยาบาล โรงพยาบาลรามาธิบดี</option>
+        <option>ผู้ปฏิบัติการพยาบาลขั้นสูง (APN)</option>
+        <option value="อื่นๆ">อื่นๆ</option>
+      </select>
+      <input type="text" id="departmentOther" name="departmentOther" class="hidden" placeholder="กรุณาระบุงานอื่นๆ" />
 
-  <form>
-    <label>หน่วยงาน:</label>
-    <input type="text" name="department" required>
 
-    <label>ตำแหน่งของผู้ใช้งาน:</label>
-    <input type="text" name="position" required>
+      <label>หน่วยงาน:</label>
+      <input list="unitList" type="text" name="unit" id="unitInput" placeholder="ใส่รหัสหน่วยงานของท่าน" required />
+      <datalist id="unitList"></datalist>
 
-    <label>วันที่พบปัญหา:</label>
-    <input type="date" name="date" required>
 
-    <label>ความคิดเห็น:</label>
-    <textarea name="comments" rows="4" required></textarea>
+      <label>ตำแหน่งของผู้ใช้งาน:</label>
+      <select name="position" id="position" required>
+        <option value="" disabled selected>กรุณาเลือกตำแหน่งของท่าน</option>
+        <option>หัวหน้างาน</option>
+        <option>ผู้ตรวจการ</option>
+        <option>หัวหน้าหอผู้ป่วย</option>
+        <option>พยาบาล</option>
+        <option>ผู้ช่วยพยาบาล</option>
+        <option>ธุรการ</option>
+        <option>เจ้าหน้าที่ปฏิบัติการบริหาร</option>
+        <option value="อื่นๆ">อื่นๆ</option>
+      </select>
+      <input type="text" id="positionOther" name="positionOther" class="hidden" placeholder="กรุณาระบุตำแหน่งอื่นๆ" />
 
-    <br><br>
-    <button type="submit">ส่ง</button>
-  </form>
 
-  <h3>🔗 QR Code to This Page</h3>
-  <img id="qrImage" src="" alt="QR Code" width="200">
-  
+      <label>วันที่พบปัญหา:</label>
+      <input type="date" name="date" required />
+
+
+       <label>ความคิดเห็น:</label>
+      <textarea name="comments" rows="4" placeholder="กรอกความคิดเห็นที่นี่..." required></textarea>
+     
+      <label>แนบรูปภาพ (เลือกได้สูงสุด 5 รูป):</label>
+      <input type="file" id="imageInput" accept="image/*" multiple />
+      <button type="button" id="confirmImagesBtn" style="margin-top:10px; background-color:#b47aa2;">ยืนยันรูปภาพ</button>
+      <div id="imageStatus" style="margin-top:8px; color:#666;"></div>
+
+
+        <label>เบอร์โทรศัพท์ที่ติดต่อได้:</label>
+<input type="text" name="contactNumber" id="contactNumber" placeholder="ระบุเบอร์โทรศัพท์หน่วยงาน หรือเบอร์มือถือ" required />
+
+
+
+
+
+
+      <button type="submit">ส่งข้อเสนอแนะ</button>
+      <button class="exit-button" type="button" onclick="exitPage()">คลิกเพื่อออกจากหน้านี้</button>
+      <img src="https://img.freepik.com/free-vector/hand-drawn-doctors-nurses_23-2148917433.jpg" alt="Cute nurse cartoon" class="cute-image" />
+    </form>
+  </div>
+
+
+  <div id="waitingBox">กรุณารอสักครู่...</div>
+
+
   <script>
-    const qrUrl = "https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=" + encodeURIComponent(window.location.href);
-    document.getElementById("qrImage").src = qrUrl;
+    const form = document.getElementById("feedbackForm");
+    const departmentMain = document.getElementById("departmentMain");
+    const departmentOther = document.getElementById("departmentOther");
+    const position = document.getElementById("position");
+    const positionOther = document.getElementById("positionOther");
+    const imageInput = document.getElementById("imageInput");
+    const confirmImagesBtn = document.getElementById("confirmImagesBtn");
+    const imageStatus = document.getElementById("imageStatus");
+    const waitingBox = document.getElementById("waitingBox");
+    const unitInput = document.getElementById("unitInput");
+    const unitList = document.getElementById("unitList");
+
+
+    let imagesConfirmed = false;
+
+
+    departmentMain.addEventListener("change", () => {
+      const dept = departmentMain.value;
+      if (dept === "อื่นๆ") {
+        departmentOther.classList.remove("hidden");
+        departmentOther.required = true;
+      } else {
+        departmentOther.classList.add("hidden");
+        departmentOther.required = false;
+
+
+        unitList.innerHTML = "";
+        unitInput.value = "";
+        google.script.run.withSuccessHandler(units => {
+          if (units.length === 0) {
+            unitInput.setAttribute("disabled", "disabled");
+            unitInput.placeholder = "หน่วยงานไม่มีสำหรับงานนี้";
+          } else {
+            unitInput.removeAttribute("disabled");
+            unitInput.placeholder = "ใส่รหัสหน่วยงานของท่าน";
+            units.forEach(unit => {
+              const option = document.createElement("option");
+              option.value = unit;
+              unitList.appendChild(option);
+            });
+          }
+        }).getUnitsByDepartment(dept);
+      }
+    });
+
+
+    position.addEventListener("change", () => {
+      if (position.value === "อื่นๆ") {
+        positionOther.classList.remove("hidden");
+        positionOther.required = true;
+      } else {
+        positionOther.classList.add("hidden");
+        positionOther.required = false;
+      }
+    });
+
+
+    confirmImagesBtn.addEventListener('click', () => {
+      const count = imageInput.files.length;
+      if (count === 0) {
+        alert('ยังไม่ได้เลือกไฟล์รูปภาพใดๆ');
+        imagesConfirmed = false;
+        imageStatus.textContent = '';
+      } else if (count > 5) {
+        alert('กรุณาเลือกไฟล์รูปภาพไม่เกิน 5 รูป');
+        imagesConfirmed = false;
+        imageStatus.textContent = '';
+      } else {
+        alert(`คุณได้เลือกไฟล์รูปภาพ ${count} รูป`);
+        imagesConfirmed = true;
+        imageStatus.textContent = `รูปภาพที่เลือก: ${count} รูป พร้อมส่งแล้ว`;
+      }
+    });
+
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (!imagesConfirmed && imageInput.files.length > 0) {
+        alert('กรุณากดปุ่ม "ยืนยันรูปภาพ" ก่อนส่งแบบฟอร์ม');
+        return;
+      }
+      if (imageInput.files.length > 5) {
+        alert("กรุณาเลือกไฟล์รูปภาพไม่เกิน 5 รูป");
+        return;
+      }
+      waitingBox.style.display = "block";
+
+
+     const data = {
+  department: departmentMain.value === "อื่นๆ" ? departmentOther.value : departmentMain.value,
+  unit: form.unit.value,
+  position: position.value === "อื่นๆ" ? positionOther.value : position.value,
+  date: form.date.value,
+  comments: form.comments.value,
+  contactNumber: form.contactNumber.value,  // <=== Add this line!
+  images: []
+};
+
+
+      const fileReaders = [];
+      for (let i = 0; i < imageInput.files.length; i++) {
+        const file = imageInput.files[i];
+        fileReaders.push(new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (event) => resolve({ data: event.target.result });
+          reader.onerror = (err) => reject(err);
+          reader.readAsDataURL(file);
+        }));
+      }
+      Promise.all(fileReaders)
+        .then((images) => {
+          data.images = images;
+          google.script.run.withSuccessHandler(() => {
+            waitingBox.style.display = "none";
+            alert("ส่งข้อเสนอแนะเรียบร้อยแล้ว ขอบคุณค่ะ!");
+            form.reset();
+            departmentOther.classList.add("hidden");
+            positionOther.classList.add("hidden");
+            imagesConfirmed = false;
+            imageStatus.textContent = '';
+          }).withFailureHandler((err) => {
+            waitingBox.style.display = "none";
+            alert("เกิดข้อผิดพลาด: " + err.message);
+          }).submitFeedback(data);
+        })
+        .catch((error) => {
+          waitingBox.style.display = "none";
+          alert("เกิดข้อผิดพลาดในการอ่านไฟล์รูปภาพ: " + error.message);
+        });
+    });
+
+
+    function exitPage() {
+      window.close();
+      setTimeout(() => {
+        window.location.href = "about:blank";
+      }, 300);
+    }
+
+
+    function resetForm() {
+      form.reset();
+      departmentOther.classList.add("hidden");
+      positionOther.classList.add("hidden");
+      imageStatus.textContent = '';
+      imagesConfirmed = false;
+    }
   </script>
 </body>
 </html>
+
+
+
